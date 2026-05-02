@@ -1,5 +1,4 @@
 <!DOCTYPE html>
-
 <html lang="en">
 <head>
 <meta charset="UTF-8">
@@ -7,228 +6,298 @@
 <title>NEXUS CTRL-7</title>
 <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Share+Tech+Mono&display=swap" rel="stylesheet">
 <style>
-*{margin:0;padding:0;box-sizing:border-box;}
-body{
-  background:radial-gradient(ellipse at center,#0d0d0d 0%,#000 100%);
-  display:flex;justify-content:center;align-items:flex-start;
-  min-height:100vh;font-family:'Share Tech Mono',monospace;
-  padding:20px 10px;
+/* ── RESET & ROOT ─────────────────────────────────────── */
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
+:root{
+  --gap: clamp(4px, 1vh, 10px);
+  --pad: clamp(8px, 1.5vw, 16px);
+  --r: clamp(2px, 0.4vw, 5px);
+  --knob: clamp(44px, 8vw, 68px);
+  --sw-w: clamp(24px, 4.5vw, 36px);
+  --sw-h: clamp(44px, 7vh, 60px);
+  --sw-toggle-h: clamp(16px, 2.5vh, 22px);
+  --transport-h: clamp(38px, 6vh, 56px);
+  --vu-h: clamp(70px, 12vh, 115px);
+  --scope-h: clamp(60px, 10vh, 105px);
+  --eq-h: clamp(90px, 13vh, 135px);
+  --f-xs: clamp(6px, 1.2vw, 10px);
+  --f-sm: clamp(7px, 1.4vw, 11px);
+  --f-md: clamp(9px, 1.8vw, 14px);
+  --f-lg: clamp(14px, 3vw, 22px);
 }
 
+html, body{
+  width:100%; height:100%;
+  overflow:hidden;
+  background:#000;
+  font-family:'Share Tech Mono', monospace;
+}
+
+body{
+  display:flex; align-items:stretch; justify-content:center;
+}
+
+/* ── PANEL ────────────────────────────────────────────── */
 .panel{
-width:520px;max-width:100%;
-background:linear-gradient(160deg,#1e1e1e 0%,#0d0d0d 40%,#181818 100%);
-border:2px solid #2a2a2a;border-radius:6px;padding:14px;
-position:relative;
-box-shadow:0 0 60px rgba(0,0,0,0.9),0 20px 80px rgba(0,0,0,0.8),
-inset 0 1px 0 rgba(255,255,255,0.04),inset 0 -1px 0 rgba(0,0,0,0.5);
+  width:100%; max-width:600px;
+  height:100dvh;
+  background:linear-gradient(160deg,#1e1e1e 0%,#0d0d0d 40%,#181818 100%);
+  border-left:1px solid #2a2a2a; border-right:1px solid #2a2a2a;
+  padding:var(--pad);
+  position:relative;
+  display:flex; flex-direction:column; gap:var(--gap);
+  box-shadow:inset 0 1px 0 rgba(255,255,255,0.04);
 }
 
 /* Corner bolts */
 .bolt{
-position:absolute;width:11px;height:11px;
-background:radial-gradient(circle at 35% 35%,#666,#1a1a1a);
-border-radius:50%;box-shadow:0 1px 3px rgba(0,0,0,0.8),inset 0 1px 0 rgba(255,255,255,0.08);
+  position:absolute;
+  width:clamp(8px,1.5vw,13px); height:clamp(8px,1.5vw,13px);
+  background:radial-gradient(circle at 35% 35%,#666,#1a1a1a);
+  border-radius:50%;
+  box-shadow:0 1px 3px rgba(0,0,0,0.8),inset 0 1px 0 rgba(255,255,255,0.08);
+  z-index:10;
 }
-.bolt-tl{top:7px;left:7px;}
-.bolt-tr{top:7px;right:7px;}
-.bolt-bl{bottom:7px;left:7px;}
-.bolt-br{bottom:7px;right:7px;}
+.bolt-tl{top:6px;left:6px;} .bolt-tr{top:6px;right:6px;}
+.bolt-bl{bottom:6px;left:6px;} .bolt-br{bottom:6px;right:6px;}
 
-/* Top Grille */
+/* ── GRILLE ───────────────────────────────────────────── */
 .grille{
-height:56px;margin-bottom:10px;
-background:repeating-linear-gradient(90deg,#080808 0px,#080808 3px,#161616 3px,#161616 7px);
-border:1px solid #222;border-radius:3px;
-display:flex;align-items:center;justify-content:center;
-position:relative;overflow:hidden;
+  flex-shrink:0;
+  height:clamp(36px, 6vh, 64px);
+  background:repeating-linear-gradient(90deg,#080808 0px,#080808 3px,#161616 3px,#161616 7px);
+  border:1px solid #222; border-radius:var(--r);
+  display:flex; align-items:center; justify-content:center;
+  position:relative; overflow:hidden;
 }
 .grille::before{
-content:’’;position:absolute;inset:0;
-background:linear-gradient(90deg,rgba(0,0,0,0.6) 0%,transparent 20%,transparent 80%,rgba(0,0,0,0.6) 100%);
+  content:'';position:absolute;inset:0;
+  background:linear-gradient(90deg,rgba(0,0,0,0.6) 0%,transparent 20%,transparent 80%,rgba(0,0,0,0.6) 100%);
 }
 .status-bar{
-width:56px;height:5px;border-radius:3px;
-background:#00ffff;
-box-shadow:0 0 8px #00ffff,0 0 20px #00ffffaa,0 0 40px #00ffff44;
-animation:statusPulse 3s ease-in-out infinite;
+  width:clamp(40px,8vw,70px); height:clamp(3px,0.5vh,6px);
+  border-radius:3px; background:#00ffff;
+  box-shadow:0 0 8px #00ffff,0 0 20px #00ffffaa,0 0 40px #00ffff44;
+  animation:statusPulse 3s ease-in-out infinite;
 }
-.grille-light{
-position:absolute;width:5px;height:5px;border-radius:50%;
-}
+.grille-light{position:absolute; width:5px; height:5px; border-radius:50%;}
 .gl-l{left:10px;background:#00ffff;box-shadow:0 0 6px #00ffff;animation:statusPulse 2s ease-in-out infinite;}
 .gl-r{right:10px;background:#00ffff;box-shadow:0 0 6px #00ffff;animation:statusPulse 2s ease-in-out infinite 1s;}
-
 @keyframes statusPulse{0%,100%{opacity:1;}50%{opacity:0.3;}}
 
-/* Info Display */
+/* ── INFO DISPLAY ─────────────────────────────────────── */
 .info-display{
-background:#050d0d;border:1px solid #0a2525;border-radius:3px;
-padding:6px 10px;margin-bottom:10px;min-height:38px;
-display:flex;flex-direction:column;align-items:center;justify-content:center;
-position:relative;overflow:hidden;
+  flex-shrink:0;
+  height:clamp(30px,5vh,50px);
+  background:#050d0d; border:1px solid #0a2525; border-radius:var(--r);
+  padding:4px 10px;
+  display:flex; flex-direction:column; align-items:center; justify-content:center;
+  position:relative; overflow:hidden;
 }
 .info-display::before{
-content:’’;position:absolute;inset:0;
-background:repeating-linear-gradient(0deg,transparent 0px,transparent 3px,rgba(0,255,255,0.015) 3px,rgba(0,255,255,0.015) 4px);
-pointer-events:none;
+  content:'';position:absolute;inset:0;
+  background:repeating-linear-gradient(0deg,transparent 0px,transparent 3px,rgba(0,255,255,0.015) 3px,rgba(0,255,255,0.015) 4px);
+  pointer-events:none;
 }
 .info-name{
-font-family:‘Orbitron’,monospace;font-size:11px;font-weight:700;
-color:#00ffff;letter-spacing:2px;text-transform:uppercase;
-text-shadow:0 0 8px #00ffff;
+  font-family:'Orbitron',monospace; font-size:var(--f-md); font-weight:700;
+  color:#00ffff; letter-spacing:2px; text-transform:uppercase;
+  text-shadow:0 0 8px #00ffff; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
 }
-.info-sub{font-size:9px;color:#006666;letter-spacing:1.5px;margin-top:2px;}
+.info-sub{font-size:var(--f-xs);color:#006666;letter-spacing:1.5px;margin-top:1px;}
 
-/* VU Meters */
-.vu-row{display:flex;gap:6px;margin-bottom:10px;}
-.vu-meter{flex:1;height:95px;background:#050a0a;border:1px solid #1a2a2a;border-radius:3px;display:block;}
+/* ── VU METERS ────────────────────────────────────────── */
+.vu-row{flex-shrink:0; display:flex; gap:var(--gap); height:var(--vu-h);}
+.vu-meter{flex:1; display:block; background:#050a0a; border:1px solid #1a2a2a; border-radius:var(--r);}
 
-/* Oscilloscope */
+/* ── OSCILLOSCOPE ─────────────────────────────────────── */
 .scope-wrap{
-position:relative;margin-bottom:10px;padding:0 16px;
+  flex-shrink:0; position:relative;
+  padding:0 clamp(10px,2.5vw,18px);
+  height:var(--scope-h);
 }
 .scope-handle{
-position:absolute;top:50%;transform:translateY(-50%);
-width:12px;height:50px;
-background:linear-gradient(90deg,#222,#444,#333,#222);
-border-radius:4px;border:1px solid #333;
+  position:absolute; top:50%; transform:translateY(-50%);
+  width:clamp(8px,1.8vw,14px); height:clamp(36px,6vh,55px);
+  background:linear-gradient(90deg,#222,#444,#333,#222);
+  border-radius:4px; border:1px solid #333;
 }
-.scope-handle.left{left:0;}
-.scope-handle.right{right:0;}
+.scope-handle.left{left:0;} .scope-handle.right{right:0;}
 .scope-handle-light{
-position:absolute;bottom:6px;left:50%;transform:translateX(-50%);
-width:5px;height:5px;border-radius:50%;
+  position:absolute; bottom:5px; left:50%; transform:translateX(-50%);
+  width:5px; height:5px; border-radius:50%;
 }
 .scope-handle.left .scope-handle-light{background:#ff8c00;box-shadow:0 0 5px #ff8c00;}
 .scope-handle.right .scope-handle-light{background:#ff8c00;box-shadow:0 0 5px #ff8c00;}
 #scope{
-width:100%;height:95px;display:block;
-background:#050d0a;border:1px solid #0a2a1a;border-radius:3px;
+  width:100%; height:100%; display:block;
+  background:#050d0a; border:1px solid #0a2a1a; border-radius:var(--r);
 }
 
-/* EQ + Knobs */
-.eq-section{display:flex;gap:8px;margin-bottom:10px;align-items:stretch;}
-.knob-col{display:flex;flex-direction:column;gap:10px;justify-content:center;}
-.knob-wrap{display:flex;flex-direction:column;align-items:center;gap:3px;}
+/* ── EQ + KNOBS ───────────────────────────────────────── */
+.eq-section{
+  flex-shrink:0; display:flex; gap:var(--gap);
+  height:var(--eq-h); align-items:stretch;
+}
+.knob-col{display:flex;flex-direction:column;gap:clamp(6px,1.2vh,14px);justify-content:center;}
+.knob-wrap{display:flex;flex-direction:column;align-items:center;gap:2px;}
 .knob{
-width:58px;height:58px;
-background:radial-gradient(circle at 35% 30%,#4a4a4a 0%,#2a2a2a 40%,#111 100%);
-border-radius:50%;border:2px solid #333;
-position:relative;cursor:ns-resize;user-select:none;
-box-shadow:0 4px 16px rgba(0,0,0,0.9),0 1px 0 rgba(255,255,255,0.06),inset 0 1px 0 rgba(255,255,255,0.04);
-transition:box-shadow 0.1s;
+  width:var(--knob); height:var(--knob);
+  background:radial-gradient(circle at 35% 30%,#4a4a4a 0%,#2a2a2a 40%,#111 100%);
+  border-radius:50%; border:2px solid #333;
+  position:relative; cursor:ns-resize; user-select:none;
+  box-shadow:0 4px 16px rgba(0,0,0,0.9),0 1px 0 rgba(255,255,255,0.06);
+  transition:box-shadow 0.1s; touch-action:none;
 }
 .knob:active{box-shadow:0 2px 8px rgba(0,0,0,0.9);}
 .knob-ring{
-position:absolute;inset:-4px;border-radius:50%;
-border:2px solid transparent;
-background:linear-gradient(#1a1a1a,#1a1a1a) padding-box,
-conic-gradient(var(–ring-color,#555) var(–ring-pct,0%), #222 0%) border-box;
+  position:absolute; inset:-3px; border-radius:50%;
+  border:2px solid transparent;
+  background:linear-gradient(#1a1a1a,#1a1a1a) padding-box,
+    conic-gradient(var(--ring-color,#555) var(--ring-pct,0%), #222 0%) border-box;
 }
 .knob-indicator{
-position:absolute;width:3px;height:14px;
-background:var(–dot-color,#fff);border-radius:2px;
-top:6px;left:50%;transform:translateX(-50%);
-box-shadow:0 0 5px var(–dot-color,#fff);
+  position:absolute; width:clamp(2px,0.5vw,4px); height:clamp(10px,2vh,16px);
+  background:var(--dot-color,#fff); border-radius:2px;
+  top:clamp(4px,1vh,8px); left:50%; transform:translateX(-50%);
+  box-shadow:0 0 5px var(--dot-color,#fff);
 }
-.knob-label{font-size:8px;color:#555;letter-spacing:1.5px;text-align:center;}
+.knob-label{font-size:var(--f-xs);color:#555;letter-spacing:1.5px;text-align:center;}
 #eq-canvas{
-flex:1;height:120px;display:block;
-background:#050d0a;border:1px solid #0a2a1a;border-radius:3px;
+  flex:1; height:100%; display:block;
+  background:#050d0a; border:1px solid #0a2a1a; border-radius:var(--r);
 }
 
-/* Switches */
+/* ── SWITCHES ─────────────────────────────────────────── */
 .switches-section{
-background:#0a0a0a;border:1px solid #1e1e1e;border-radius:3px;
-padding:8px 6px;margin-bottom:8px;
+  flex-shrink:0;
+  background:#0a0a0a; border:1px solid #1e1e1e; border-radius:var(--r);
+  padding:clamp(4px,1vh,8px) var(--gap);
 }
-.switches-row{display:flex;gap:4px;justify-content:center;}
+.switches-row{display:flex;gap:clamp(3px,0.8vw,8px);justify-content:center;}
 .sw-wrap{display:flex;flex-direction:column;align-items:center;gap:3px;flex:1;}
 .sw-body{
-width:30px;height:52px;
-background:linear-gradient(180deg,#1a1a1a,#111);
-border:1px solid #2a2a2a;border-radius:4px;
-position:relative;cursor:pointer;overflow:hidden;
+  width:var(--sw-w); height:var(--sw-h);
+  background:linear-gradient(180deg,#1a1a1a,#111);
+  border:1px solid #2a2a2a; border-radius:4px;
+  position:relative; cursor:pointer; overflow:hidden;
 }
 .sw-body::before{
-content:’’;position:absolute;inset:0;
-background:linear-gradient(90deg,rgba(255,255,255,0.02) 0%,transparent 50%);
+  content:'';position:absolute;inset:0;
+  background:linear-gradient(90deg,rgba(255,255,255,0.02) 0%,transparent 50%);
 }
 .sw-toggle{
-position:absolute;left:3px;right:3px;height:20px;
-background:linear-gradient(180deg,#555,#333);
-border-radius:2px;border:1px solid #444;
-transition:top 0.12s cubic-bezier(0.4,0,0.2,1);
-top:4px;
-box-shadow:0 2px 6px rgba(0,0,0,0.7);
+  position:absolute; left:3px; right:3px; height:var(--sw-toggle-h);
+  background:linear-gradient(180deg,#555,#333);
+  border-radius:2px; border:1px solid #444;
+  transition:top 0.12s cubic-bezier(0.4,0,0.2,1); top:3px;
+  box-shadow:0 2px 6px rgba(0,0,0,0.7);
 }
-.sw-body.active .sw-toggle{top:28px;}
+.sw-body.active .sw-toggle{top:calc(var(--sw-h) - var(--sw-toggle-h) - 3px);}
 .sw-led{
-width:7px;height:7px;border-radius:50%;
-background:#222;border:1px solid #333;
-transition:all 0.2s;
+  width:clamp(5px,1.2vw,8px); height:clamp(5px,1.2vw,8px);
+  border-radius:50%; background:#222; border:1px solid #333; transition:all 0.2s;
 }
 .sw-body.active + .sw-led{
-background:var(–sw-color,#00ffff);
-box-shadow:0 0 6px var(–sw-color,#00ffff),0 0 12px var(–sw-color,#00ffff44);
+  background:var(--sw-color,#00ffff);
+  box-shadow:0 0 6px var(--sw-color,#00ffff),0 0 12px var(--sw-color,#00ffff44);
 }
-.sw-label{font-size:7px;color:#444;letter-spacing:0.5px;}
+.sw-label{font-size:var(--f-xs);color:#444;letter-spacing:0.5px;}
 
-/* LED Button Rows */
-.led-section{margin-bottom:8px;}
-.led-row{display:flex;gap:3px;margin-bottom:3px;}
+/* ── LED BUTTON ROWS ──────────────────────────────────── */
+.led-section{flex:1; display:flex; flex-direction:column; gap:clamp(2px,0.5vh,4px); min-height:0;}
+.led-row{flex:1; display:flex; gap:clamp(2px,0.5vw,4px);}
 .led-btn{
-flex:1;height:38px;
-background:linear-gradient(180deg,#0d0d0d,#090909);
-border:1px solid #1e1e1e;border-radius:3px;
-cursor:pointer;display:flex;flex-direction:column;
-align-items:center;justify-content:center;gap:3px;
-transition:all 0.1s;padding:2px 3px;
-font-family:‘Share Tech Mono’,monospace;
+  flex:1;
+  background:linear-gradient(180deg,#0d0d0d,#090909);
+  border:1px solid #1e1e1e; border-radius:var(--r);
+  cursor:pointer; display:flex; flex-direction:column;
+  align-items:center; justify-content:center;
+  gap:clamp(2px,0.5vh,4px); transition:all 0.1s;
+  padding:2px clamp(2px,0.5vw,4px);
+  font-family:'Share Tech Mono',monospace;
+  min-height:0;
 }
 .led-btn:hover{background:#151515;border-color:#2a2a2a;}
-.led-btn.active{background:#0f1212;border-color:var(–btn-color,#00ffff);}
+.led-btn.active{background:#0f1212;border-color:var(--btn-color,#00ffff);}
 .led-pip{
-width:22px;height:3px;border-radius:2px;
-background:#1a1a1a;transition:all 0.2s;
+  width:clamp(16px,4vw,28px); height:clamp(2px,0.4vh,4px);
+  border-radius:2px; background:#1a1a1a; transition:all 0.2s; flex-shrink:0;
 }
 .led-btn.active .led-pip{
-background:var(–btn-color,#00ffff);
-box-shadow:0 0 5px var(–btn-color,#00ffff),0 0 10px var(–btn-color,#00ffff44);
+  background:var(--btn-color,#00ffff);
+  box-shadow:0 0 5px var(--btn-color,#00ffff),0 0 10px var(--btn-color,#00ffff44);
 }
-.led-txt{font-size:6px;color:#333;letter-spacing:0.3px;text-align:center;line-height:1.2;max-width:100%;overflow:hidden;white-space:nowrap;text-overflow:ellipsis;}
+.led-txt{
+  font-size:var(--f-xs); color:#333; letter-spacing:0.3px;
+  text-align:center; line-height:1.1;
+  max-width:100%; overflow:hidden; white-space:nowrap; text-overflow:ellipsis;
+}
 .led-btn.active .led-txt{color:#666;}
 
-/* Transport */
-.transport{display:flex;gap:6px;}
+/* ── TRANSPORT ────────────────────────────────────────── */
+.transport{flex-shrink:0; display:flex; gap:var(--gap); height:var(--transport-h);}
 .xport-btn{
-flex:1;height:46px;
-background:linear-gradient(180deg,#0d0d0d,#080808);
-border:1px solid #1e1e1e;border-radius:4px;
-cursor:pointer;font-size:18px;
-display:flex;align-items:center;justify-content:center;
-transition:all 0.15s;font-family:inherit;
+  flex:1; height:100%;
+  background:linear-gradient(180deg,#0d0d0d,#080808);
+  border:1px solid #1e1e1e; border-radius:var(--r);
+  cursor:pointer; font-size:var(--f-lg);
+  display:flex; align-items:center; justify-content:center;
+  transition:all 0.15s; font-family:inherit;
 }
 #btn-play{border-color:#00ff8844;color:#00ff88;}
 #btn-play:hover,#btn-play.active{
-background:rgba(0,255,136,0.08);border-color:#00ff88;
-box-shadow:0 0 12px rgba(0,255,136,0.25),inset 0 0 8px rgba(0,255,136,0.05);
+  background:rgba(0,255,136,0.08);border-color:#00ff88;
+  box-shadow:0 0 12px rgba(0,255,136,0.25),inset 0 0 8px rgba(0,255,136,0.05);
 }
 #btn-stop{border-color:#ff8c0044;color:#ff8c00;}
-#btn-stop:hover{
-background:rgba(255,140,0,0.08);border-color:#ff8c00;
-box-shadow:0 0 12px rgba(255,140,0,0.25);
-}
+#btn-stop:hover{background:rgba(255,140,0,0.08);border-color:#ff8c00;box-shadow:0 0 12px rgba(255,140,0,0.25);}
 #btn-rec{border-color:#ff004444;color:#ff0044;}
 #btn-rec.active{
-background:rgba(255,0,68,0.08);border-color:#ff0044;
-box-shadow:0 0 12px rgba(255,0,68,0.25);
-animation:recPulse 1.2s ease-in-out infinite;
+  background:rgba(255,0,68,0.08);border-color:#ff0044;
+  box-shadow:0 0 12px rgba(255,0,68,0.25);
+  animation:recPulse 1.2s ease-in-out infinite;
+}
+.rec-dot{
+  display:block;
+  width:clamp(14px,3vw,22px); height:clamp(14px,3vw,22px);
+  background:#cc0022;
+  border-radius:50%;
+  box-shadow:0 0 6px #ff0033,0 0 14px #ff003366;
+  transition:all 0.2s;
+  flex-shrink:0;
+}
+#btn-rec.active .rec-dot{
+  background:#ff0033;
+  box-shadow:0 0 10px #ff0033,0 0 24px #ff0033aa,0 0 40px #ff003344;
+  animation:recDotPulse 1.2s ease-in-out infinite;
+}
+@keyframes recDotPulse{
+  0%,100%{transform:scale(1);   box-shadow:0 0 10px #ff0033,0 0 24px #ff0033aa;}
+  50%    {transform:scale(0.85);box-shadow:0 0 4px  #ff0033,0 0 8px  #ff003366;}
 }
 @keyframes recPulse{0%,100%{box-shadow:0 0 12px rgba(255,0,68,0.4);}50%{box-shadow:0 0 4px rgba(255,0,68,0.1);}}
-</style>
 
+/* ── RESPONSIVE TWEAKS ────────────────────────────────── */
+/* iPhone SE / small phones */
+@media (max-height: 680px){
+  :root{
+    --vu-h: clamp(60px, 10vh, 80px);
+    --scope-h: clamp(50px, 8vh, 70px);
+    --eq-h: clamp(80px, 11vh, 100px);
+    --sw-h: clamp(38px, 6vh, 50px);
+  }
+}
+/* iPad and larger */
+@media (min-width: 600px){
+  :root{
+    --knob: clamp(52px, 6vw, 72px);
+    --f-xs: clamp(8px, 1vw, 11px);
+    --f-sm: clamp(9px, 1.1vw, 13px);
+    --f-md: clamp(11px, 1.4vw, 16px);
+  }
+}
+</style>
 </head>
 <body>
 <div class="panel">
@@ -276,27 +345,24 @@ animation:recPulse 1.2s ease-in-out infinite;
       </div>
     </div>
 
-```
-<canvas id="eq-canvas" height="120"></canvas>
+    <canvas id="eq-canvas" height="120"></canvas>
 
-<div class="knob-col">
-  <div class="knob-wrap">
-    <div class="knob" id="k-treble" data-val="50" style="--dot-color:#00ff88;--ring-color:#00ff88">
-      <div class="knob-ring"></div>
-      <div class="knob-indicator" style="background:#00ff88;box-shadow:0 0 5px #00ff88;"></div>
+    <div class="knob-col">
+      <div class="knob-wrap">
+        <div class="knob" id="k-treble" data-val="50" style="--dot-color:#00ff88;--ring-color:#00ff88">
+          <div class="knob-ring"></div>
+          <div class="knob-indicator" style="background:#00ff88;box-shadow:0 0 5px #00ff88;"></div>
+        </div>
+        <div class="knob-label">TREBLE</div>
+      </div>
+      <div class="knob-wrap">
+        <div class="knob" id="k-space" data-val="30" style="--dot-color:#cc00ff;--ring-color:#cc00ff">
+          <div class="knob-ring"></div>
+          <div class="knob-indicator" style="background:#cc00ff;box-shadow:0 0 5px #cc00ff;"></div>
+        </div>
+        <div class="knob-label">SPACE</div>
+      </div>
     </div>
-    <div class="knob-label">TREBLE</div>
-  </div>
-  <div class="knob-wrap">
-    <div class="knob" id="k-space" data-val="30" style="--dot-color:#cc00ff;--ring-color:#cc00ff">
-      <div class="knob-ring"></div>
-      <div class="knob-indicator" style="background:#cc00ff;box-shadow:0 0 5px #cc00ff;"></div>
-    </div>
-    <div class="knob-label">SPACE</div>
-  </div>
-</div>
-```
-
   </div>
 
   <div class="switches-section">
@@ -308,7 +374,7 @@ animation:recPulse 1.2s ease-in-out infinite;
   <div class="transport">
     <button class="xport-btn" id="btn-play">▶</button>
     <button class="xport-btn" id="btn-stop">■</button>
-    <button class="xport-btn" id="btn-rec">⏺</button>
+    <button class="xport-btn" id="btn-rec"><span class="rec-dot"></span></button>
   </div>
 </div>
 
@@ -316,50 +382,111 @@ animation:recPulse 1.2s ease-in-out infinite;
 
 <script>
 // ─── STATE ───────────────────────────────────────────────────
-let audioCtx, analyser, gainNode, sourceNode;
+let audioCtx, analyser, gainNode, bassFilter, trebleFilter;
+
+// Knob-driven visual params (read in draw functions)
+const knobState = { vol:0.75, bass:0.5, treble:0.5, space:0.3 };
 let currentAudio = document.getElementById('stream-audio');
 let currentOsc = null, currentNoise = null;
 let isPlaying = false;
 let activeMode = null;
-let activeStationIndex = -1;
 
 const stationDB = { metal:[], ambient:[], electronic:[], rock:[] };
 
 // ─── AUDIO INIT ──────────────────────────────────────────────
 function initAudio() {
-  if (audioCtx) { if (audioCtx.state==='suspended') audioCtx.resume(); return; }
-  audioCtx = new (window.AudioContext||window.webkitAudioContext)();
+  if (audioCtx) { if (audioCtx.state === 'suspended') audioCtx.resume(); return; }
+  audioCtx = new (window.AudioContext || window.webkitAudioContext)();
   analyser = audioCtx.createAnalyser();
   analyser.fftSize = 2048;
+
   gainNode = audioCtx.createGain();
-  gainNode.gain.value = 0.75;
-  gainNode.connect(analyser);
+  gainNode.gain.value = knobState.vol;
+
+  bassFilter = audioCtx.createBiquadFilter();
+  bassFilter.type = 'lowshelf';
+  bassFilter.frequency.value = 250;
+  bassFilter.gain.value = 0;
+
+  trebleFilter = audioCtx.createBiquadFilter();
+  trebleFilter.type = 'highshelf';
+  trebleFilter.frequency.value = 3500;
+  trebleFilter.gain.value = 0;
+
+  gainNode.connect(bassFilter);
+  bassFilter.connect(trebleFilter);
+  trebleFilter.connect(analyser);
   analyser.connect(audioCtx.destination);
+
+  // Wire the current audio element — freshAudioElement() handles rewiring after errors
+  audioCtx.createMediaElementSource(currentAudio).connect(gainNode);
 }
 
 function stopAll() {
-  currentAudio.pause(); currentAudio.src=''; currentAudio.removeAttribute('src');
-  if (currentOsc){try{currentOsc.stop();}catch(e){} currentOsc=null;}
-  if (currentNoise){try{currentNoise.stop();}catch(e){} currentNoise=null;}
-  if (sourceNode){try{sourceNode.disconnect();}catch(e){} sourceNode=null;}
-  isPlaying=false;
+  currentAudio.pause();
+  currentAudio.src = '';
+  if (currentOsc)   { try { currentOsc.stop(); }   catch(e){} currentOsc   = null; }
+  if (currentNoise) { try { currentNoise.stop(); }  catch(e){} currentNoise = null; }
+  isPlaying = false;
   document.getElementById('btn-play').classList.remove('active');
 }
 
 function playStream(url, name) {
-  stopAll(); initAudio();
+  if (currentOsc)   { try { currentOsc.stop(); }   catch(e){} currentOsc   = null; }
+  if (currentNoise) { try { currentNoise.stop(); }  catch(e){} currentNoise = null; }
+
+  currentAudio.pause();
+  initAudio();
+
   currentAudio.src = url;
-  try {
-    if (!sourceNode || sourceNode._url !== url) {
-      try { if(sourceNode) sourceNode.disconnect(); } catch(e){}
-      sourceNode = audioCtx.createMediaElementSource(currentAudio);
-      sourceNode._url = url;
-      sourceNode.connect(gainNode);
-    }
-  } catch(e) { /* source already created for this element */ }
+  currentAudio.load();
   currentAudio.play()
-    .then(()=>{ isPlaying=true; setInfo(name,'◀▶ STREAMING'); document.getElementById('btn-play').classList.add('active'); })
-    .catch(()=>{ setInfo('STREAM ERROR','TRY ANOTHER'); });
+    .then(() => {
+      isPlaying = true;
+      setInfo(name, '◀▶ STREAMING');
+      document.getElementById('btn-play').classList.add('active');
+    })
+    .catch(err => {
+      console.warn('Stream failed:', url, err);
+      setInfo('STREAM FAILED', 'TRY ANOTHER');
+      isPlaying = false;
+      freshAudioElement(); // swap out poisoned element
+    });
+}
+
+function freshAudioElement() {
+  // The <audio> element enters an unrecoverable error state after a bad stream.
+  // Swap it out entirely and reconnect to the existing audio graph.
+  currentAudio.pause();
+  currentAudio.src = '';
+  const old = currentAudio;
+
+  const neo = document.createElement('audio');
+  neo.crossOrigin = 'anonymous';
+  neo.preload = 'none';
+  old.parentNode.replaceChild(neo, old);
+  currentAudio = neo;
+
+  // Wire the fresh element into the existing audio graph
+  if (audioCtx && gainNode) {
+    try {
+      audioCtx.createMediaElementSource(neo).connect(gainNode);
+    } catch(e) { console.warn('MediaElementSource error:', e); }
+  }
+
+  attachErrorListener();
+}
+
+function attachErrorListener() {
+  currentAudio.addEventListener('error', () => {
+    if (isPlaying) {
+      isPlaying = false;
+      document.getElementById('btn-play').classList.remove('active');
+      document.querySelectorAll('.led-btn').forEach(b => b.classList.remove('active'));
+      setInfo('SIGNAL LOST', 'SELECT A STATION');
+    }
+    freshAudioElement();
+  });
 }
 
 function playTone(freq, waveType='sine') {
@@ -407,39 +534,40 @@ function setInfo(name, sub) {
   document.getElementById('info-sub').textContent = sub.toUpperCase();
 }
 
-// ─── HARDCODED FALLBACK STATIONS ────────────────────────────
+// ─── STATIONS (HTTPS + CORS-friendly — analyser works with these) ──
+// SomaFM is the gold standard: always HTTPS, always CORS, always live
 const FALLBACK = {
   metal: [
-    {name:'Metal Devastation',  url_resolved:'https://metaldevastationradio.com:8443/stream'},
-    {name:'PowerThrash Metal',  url_resolved:'https://stream.powerthrash.com:8443/stream'},
-    {name:'Metal Storm Radio',  url_resolved:'http://88.198.121.211:8025/live'},
-    {name:'Metal Only',         url_resolved:'https://streams.radiomast.io/ref:46c5f0e0-6eeb-480f-93cf-0edd9c44e93b'},
-    {name:'BFM Metal',          url_resolved:'http://bfmradio.streamguys.net/metal'},
-    {name:'Radio Metal On',     url_resolved:'http://cast.rcast.net/tuner/92949'},
+    {name:'SomaFM Metal',       url_resolved:'https://ice6.somafm.com/metal-128-mp3'},
+    {name:'SomaFM Doomed',      url_resolved:'https://ice6.somafm.com/doomed-128-mp3'},
+    {name:'SomaFM Dark Zone',   url_resolved:'https://ice4.somafm.com/darkzone-128-mp3'},
+    {name:'SomaFM Digitalis',   url_resolved:'https://ice6.somafm.com/digitalis-128-mp3'},
+    {name:'SomaFM BAGeL',       url_resolved:'https://ice4.somafm.com/bagel-128-mp3'},
+    {name:'SomaFM Suburbs',     url_resolved:'https://ice4.somafm.com/suburbsofgoa-128-mp3'},
   ],
   ambient: [
-    {name:'Ambient Sleeping Pill', url_resolved:'http://198.58.98.83:8258/stream'},
-    {name:'Chillout Zone',         url_resolved:'https://streams.radiomast.io/ref:63a8c6da-2d88-4c29-afab-d5b13c42e66e'},
-    {name:'Space Station Radio',   url_resolved:'https://icecast.omroep.nl/radio6-bb-mp3'},
-    {name:'Drone Zone',            url_resolved:'https://ice6.somafm.com/dronezone-128-mp3'},
-    {name:'Deep Space One',        url_resolved:'https://ice1.somafm.com/deepspaceone-128-mp3'},
-    {name:'Lush',                  url_resolved:'https://ice4.somafm.com/lush-128-mp3'},
+    {name:'SomaFM Drone Zone',  url_resolved:'https://ice6.somafm.com/dronezone-128-mp3'},
+    {name:'SomaFM Deep Space',  url_resolved:'https://ice1.somafm.com/deepspaceone-128-mp3'},
+    {name:'SomaFM Lush',        url_resolved:'https://ice4.somafm.com/lush-128-mp3'},
+    {name:'SomaFM Synphaera',   url_resolved:'https://ice6.somafm.com/synphaera-128-mp3'},
+    {name:'SomaFM Space Sta.',  url_resolved:'https://ice6.somafm.com/spacestation-128-mp3'},
+    {name:'SomaFM Groove Sal.', url_resolved:'https://ice6.somafm.com/groovesalad-128-mp3'},
   ],
   electronic: [
-    {name:'SomaFM Groove Salad',   url_resolved:'https://ice6.somafm.com/groovesalad-128-mp3'},
-    {name:'Digitally Imported',    url_resolved:'https://streams.radiomast.io/ref:e75add99-ce05-4e0a-a55b-e0f2b4d1a6fb'},
-    {name:'SomaFM Cliqhop IDM',    url_resolved:'https://ice4.somafm.com/cliqhop-128-mp3'},
-    {name:'TechnoBase.FM',         url_resolved:'https://listen.technobase.fm/dsl.mp3'},
-    {name:'HardBase.FM',           url_resolved:'https://listen.hardbase.fm/dsl.mp3'},
-    {name:'Trance Base',           url_resolved:'https://listen.trancebase.fm/dsl.mp3'},
+    {name:'SomaFM Cliqhop IDM', url_resolved:'https://ice4.somafm.com/cliqhop-128-mp3'},
+    {name:'SomaFM DefCon',      url_resolved:'https://ice6.somafm.com/defcon-128-mp3'},
+    {name:'SomaFM Illinois St.',url_resolved:'https://ice4.somafm.com/illstreet-128-mp3'},
+    {name:'SomaFM Fluid',       url_resolved:'https://ice2.somafm.com/fluid-128-mp3'},
+    {name:'SomaFM Sonic Univ.', url_resolved:'https://ice6.somafm.com/sonicuniverse-128-mp3'},
+    {name:'SomaFM Suburbs Goa', url_resolved:'https://ice4.somafm.com/suburbsofgoa-128-mp3'},
   ],
   rock: [
-    {name:'KNAC Pure Rock',     url_resolved:'https://knac.com/player/listen.m3u'},
-    {name:'SomaFM Rock A',      url_resolved:'https://ice4.somafm.com/illstreet-128-mp3'},
-    {name:'Classic Rock Florida',url_resolved:'http://server4.shoutcast-hosting.net:9002/;stream'},
-    {name:'Radio Paradise Rock', url_resolved:'https://stream.radioparadise.com/rock-192'},
-    {name:'181 Classic Rock',    url_resolved:'https://listen.181fm.com/181-classicrock_128k.mp3'},
-    {name:'Absolute Classic Rock',url_resolved:'https://media-ice.musicradio.com/AbsoluteClassicRock'},
+    {name:'Radio Paradise Rock',url_resolved:'https://stream.radioparadise.com/rock-192'},
+    {name:'Radio Paradise Main',url_resolved:'https://stream.radioparadise.com/aac-192'},
+    {name:'Radio Paradise Melo',url_resolved:'https://stream.radioparadise.com/mellow-192'},
+    {name:'SomaFM BAGeL Radio', url_resolved:'https://ice4.somafm.com/bagel-128-mp3'},
+    {name:'SomaFM Left Coast',  url_resolved:'https://ice6.somafm.com/leftcoast-128-mp3'},
+    {name:'SomaFM Folk Fwd',    url_resolved:'https://ice4.somafm.com/folkfwd-128-mp3'},
   ]
 };
 
@@ -612,23 +740,38 @@ document.querySelectorAll('.knob').forEach(knob=>{
   let startY, startVal;
   const getV = ()=>parseInt(knob.dataset.val)||50;
   const setV = v=>{
-    v = Math.max(0,Math.min(100,v));
+    v = Math.max(0, Math.min(100, v));
     knob.dataset.val = v;
-    const deg = -135 + (v/100)*270;
+    const norm = v / 100;
+    const deg  = -135 + norm * 270;
     knob.style.transform = `rotate(${deg}deg)`;
-    const pct = (v/100)*100;
-    knob.style.setProperty('--ring-pct', pct+'%');
-    if (knob.id==='k-vol'&&gainNode) gainNode.gain.value=v/100;
+    knob.style.setProperty('--ring-pct', (norm * 100) + '%');
+
+    if (knob.id === 'k-vol') {
+      knobState.vol = norm;
+      if (gainNode) gainNode.gain.value = norm;
+    }
+    if (knob.id === 'k-bass') {
+      knobState.bass = norm;
+      // -18dB to +18dB shelf; centre (0.5) = 0dB
+      if (bassFilter) bassFilter.gain.value = (norm - 0.5) * 36;
+    }
+    if (knob.id === 'k-treble') {
+      knobState.treble = norm;
+      if (trebleFilter) trebleFilter.gain.value = (norm - 0.5) * 36;
+    }
+    if (knob.id === 'k-space') {
+      knobState.space = norm; // 0 = zoomed in tight, 1 = zoomed out wide
+    }
   };
   setV(getV());
 
   const onMove = e=>{ const dy=(startY-e.clientY)*1.2; setV(startVal+dy); };
-  const onUp = ()=>{ document.removeEventListener('mousemove',onMove); document.removeEventListener('mouseup',onUp); };
-
+  const onUp   = ()=>{ document.removeEventListener('mousemove',onMove); document.removeEventListener('mouseup',onUp); };
   knob.addEventListener('mousedown', e=>{ startY=e.clientY; startVal=getV(); e.preventDefault();
     document.addEventListener('mousemove',onMove); document.addEventListener('mouseup',onUp); });
-  knob.addEventListener('touchstart',e=>{startY=e.touches[0].clientY;startVal=getV();e.preventDefault();},{passive:false});
-  knob.addEventListener('touchmove',e=>{const dy=(startY-e.touches[0].clientY)*1.2;setV(startVal+dy);e.preventDefault();},{passive:false});
+  knob.addEventListener('touchstart', e=>{startY=e.touches[0].clientY;startVal=getV();e.preventDefault();},{passive:false});
+  knob.addEventListener('touchmove',  e=>{const dy=(startY-e.touches[0].clientY)*1.2;setV(startVal+dy);e.preventDefault();},{passive:false});
 });
 
 // ─── VISUALIZATION ──────────────────────────────────────────
@@ -704,103 +847,191 @@ function drawVU(canvas, color, level, peak, label) {
 }
 
 function drawScope(timeData) {
-  const canvas=document.getElementById('scope');
-  const W=canvas.width, H=canvas.height;
-  const ctx=canvas.getContext('2d');
-  ctx.fillStyle='rgba(5,13,10,0.25)'; ctx.fillRect(0,0,W,H);
+  const canvas = document.getElementById('scope');
+  const W = canvas.width, H = canvas.height;
+  const ctx = canvas.getContext('2d');
+  ctx.fillStyle = 'rgba(5,13,10,0.25)'; ctx.fillRect(0,0,W,H);
 
   // Grid
-  ctx.strokeStyle='rgba(0,255,136,0.04)'; ctx.lineWidth=0.5;
+  ctx.strokeStyle = 'rgba(0,255,136,0.04)'; ctx.lineWidth = 0.5;
   for(let i=1;i<8;i++){ctx.beginPath();ctx.moveTo(W/8*i,0);ctx.lineTo(W/8*i,H);ctx.stroke();}
   for(let i=1;i<4;i++){ctx.beginPath();ctx.moveTo(0,H/4*i);ctx.lineTo(W,H/4*i);ctx.stroke();}
 
-  // Waveform
-  ctx.beginPath(); ctx.strokeStyle='#00ffcc'; ctx.lineWidth=1.5;
-  ctx.shadowColor='#00ffcc'; ctx.shadowBlur=6;
-  const sw=W/(timeData.length/2);
-  for(let i=0;i<timeData.length/2;i++){
-    const y=(timeData[i]/128)*H/2;
-    i===0?ctx.moveTo(0,y):ctx.lineTo(i*sw,y);
+  // SPACE knob → how many samples shown (zoom: low=tight zoom, high=wide view)
+  const zoom      = 0.1 + knobState.space * 1.8;  // 0.1..1.9
+  const samples   = Math.max(64, Math.floor(timeData.length * zoom));
+  const sliceW    = W / samples;
+
+  // BASS knob → vertical amplitude scale (0.3..2.5×)
+  const ampScale  = 0.3 + knobState.bass * 2.2;
+
+  // TREBLE knob → waveform glow intensity
+  const glow      = 2 + knobState.treble * 10;
+  const waveColor = `hsl(${160 + knobState.treble * 60}, 100%, 60%)`;
+
+  ctx.beginPath();
+  ctx.strokeStyle = waveColor;
+  ctx.lineWidth   = 1.5;
+  ctx.shadowColor = waveColor;
+  ctx.shadowBlur  = glow;
+
+  for (let i = 0; i < samples && i < timeData.length; i++) {
+    const norm = (timeData[i] / 128.0) - 1;           // -1..+1
+    const y    = H/2 + norm * (H/2) * ampScale;
+    const x    = i * sliceW;
+    i === 0 ? ctx.moveTo(x, y) : ctx.lineTo(x, y);
   }
-  ctx.stroke(); ctx.shadowBlur=0;
+  ctx.stroke();
+  ctx.shadowBlur = 0;
 }
 
 function drawEQ(freqData) {
-  const canvas=document.getElementById('eq-canvas');
-  const W=canvas.width, H=canvas.height;
-  const ctx=canvas.getContext('2d');
-  ctx.fillStyle='#050d0a'; ctx.fillRect(0,0,W,H);
-  const bars=8, segH=6, segGap=2;
-  const barW=Math.floor((W-10)/bars)-3;
-  const step=Math.floor(freqData.length/bars*0.4);
-  const numSegs=Math.floor((H-8)/(segH+segGap));
-  for(let b=0;b<bars;b++){
-    let sum=0; for(let j=0;j<step;j++) sum+=freqData[b*step+j];
-    const lvl=sum/(step*255);
-    const activeSeg=Math.floor(lvl*numSegs*1.1);
-    const x=5+b*(barW+3);
-    const col=EQ_COLS[b];
-    for(let s=0;s<numSegs;s++){
-      const sy=H-4-s*(segH+segGap)-segH;
-      if(s<activeSeg){ctx.fillStyle=col;ctx.shadowColor=col;ctx.shadowBlur=s<activeSeg-2?3:6;}
-      else{ctx.fillStyle='#111';ctx.shadowBlur=0;}
-      ctx.fillRect(x,sy,barW,segH);
+  const canvas = document.getElementById('eq-canvas');
+  const W = canvas.width, H = canvas.height;
+  const ctx = canvas.getContext('2d');
+  ctx.fillStyle = '#050d0a'; ctx.fillRect(0,0,W,H);
+
+  const bars    = 8;
+  const segH    = 6, segGap = 2;
+  const barW    = Math.floor((W - 10) / bars) - 3;
+  const step    = Math.floor(freqData.length / bars * 0.4);
+  const numSegs = Math.floor((H - 8) / (segH + segGap));
+
+  // Bass boost (knob) amplifies left bars; treble amplifies right bars
+  const bassBoost   = 0.4 + knobState.bass * 2.2;    // 0.4..2.6
+  const trebleBoost = 0.4 + knobState.treble * 2.2;
+
+  for (let b = 0; b < bars; b++) {
+    let sum = 0;
+    for (let j = 0; j < step; j++) sum += freqData[b * step + j];
+    let lvl = sum / (step * 255);
+
+    // Blend bass/treble boost across the 8 bars
+    const t      = b / (bars - 1);                         // 0 = low, 1 = high
+    const boost  = bassBoost * (1 - t) + trebleBoost * t;
+    lvl = Math.min(1, lvl * boost);
+
+    const activeSeg = Math.floor(lvl * numSegs * 1.1);
+    const x = 5 + b * (barW + 3);
+    const col = EQ_COLS[b];
+
+    for (let s = 0; s < numSegs; s++) {
+      const sy = H - 4 - s * (segH + segGap) - segH;
+      if (s < activeSeg) {
+        ctx.fillStyle = col; ctx.shadowColor = col;
+        ctx.shadowBlur = s < activeSeg - 2 ? 3 : 6;
+      } else {
+        ctx.fillStyle = '#111'; ctx.shadowBlur = 0;
+      }
+      ctx.fillRect(x, sy, barW, segH);
     }
-    ctx.shadowBlur=0;
+    ctx.shadowBlur = 0;
   }
 }
 
 // ─── ANIMATION LOOP ─────────────────────────────────────────
+// Simulated audio state for when CORS blocks the analyser
+const sim = { phase:[0,0,0,0], speed:[0.9,1.3,1.7,2.1], amp:[0.55,0.48,0.62,0.44] };
+
+function isAnalyserActive(freq) {
+  // Returns false if the analyser is getting silence/flatline (stream blocked by CORS)
+  let sum = 0;
+  for (let i = 0; i < 64; i++) sum += freq[i];
+  return sum > 256; // silence = all zeros
+}
+
+function simulateFreq(t) {
+  // Generate fake but musical-looking freq data when analyser is blocked
+  const f = new Uint8Array(1024);
+  for (let b = 0; b < 8; b++) {
+    const base = 40 + b * 28;
+    const beat = 0.5 + 0.5 * Math.sin(t * (1.1 + b * 0.15));
+    const lvl  = Math.max(0, (base * beat * sim.amp[b % 4] * (1 + 0.3 * Math.sin(t * sim.speed[b % 4] + b))));
+    const step = Math.floor(1024 / 8);
+    for (let j = 0; j < step; j++) {
+      const falloff = 1 - j / step;
+      f[b * step + j] = Math.min(255, lvl * falloff * falloff);
+    }
+  }
+  return f;
+}
+
+function simulateTime(t) {
+  const d = new Uint8Array(2048);
+  for (let i = 0; i < 2048; i++) {
+    const x = i / 2048;
+    const wave = Math.sin(x * Math.PI * 8 + t * 4.2) * 0.4
+               + Math.sin(x * Math.PI * 20 + t * 7.1) * 0.2
+               + Math.sin(x * Math.PI * 3  + t * 1.8) * 0.3;
+    d[i] = 128 + wave * 60 * (0.7 + 0.3 * Math.sin(t * 1.3));
+  }
+  return d;
+}
+
 function animate() {
   requestAnimationFrame(animate);
-  const vuCanvases=[0,1,2,3].map(i=>document.getElementById('vu'+i));
-  const t=Date.now()/1000;
+  const vuCanvases = [0,1,2,3].map(i => document.getElementById('vu'+i));
+  const t = Date.now() / 1000;
 
-  if(analyser && isPlaying) {
-    const freq=new Uint8Array(analyser.frequencyBinCount);
-    const time=new Uint8Array(analyser.fftSize);
+  if (analyser && isPlaying) {
+    const freq = new Uint8Array(analyser.frequencyBinCount);
+    const time = new Uint8Array(analyser.fftSize);
     analyser.getByteFrequencyData(freq);
     analyser.getByteTimeDomainData(time);
 
-    // Frequency bands → VU
-    const bands=[[0,3],[4,15],[16,63],[64,200]];
-    bands.forEach(([s,e],ch)=>{
-      let sum=0; for(let i=s;i<=e;i++) sum+=freq[i];
-      const raw=(sum/((e-s+1)*255))*1.6;
-      vuSmooth[ch]+=(raw-vuSmooth[ch])*0.2;
-      if(raw>vuPeak[ch]){vuPeak[ch]=raw;vuPeakT[ch]=t;}
-      else if(t-vuPeakT[ch]>1.2) vuPeak[ch]*=0.97;
-      drawVU(vuCanvases[ch],VU_COLS[ch],vuSmooth[ch],vuPeak[ch],VU_LABELS[ch]);
+    const live = isAnalyserActive(freq);
+    const usedFreq = live ? freq : simulateFreq(t);
+    const usedTime = live ? time : simulateTime(t);
+
+    const bands = [[0,3],[4,15],[16,63],[64,200]];
+    bands.forEach(([s,e],ch) => {
+      let sum = 0; for (let i = s; i <= e; i++) sum += usedFreq[i];
+      const raw = (sum / ((e - s + 1) * 255)) * (live ? 1.6 : 1.2);
+      vuSmooth[ch] += (raw - vuSmooth[ch]) * 0.2;
+      if (raw > vuPeak[ch]) { vuPeak[ch] = raw; vuPeakT[ch] = t; }
+      else if (t - vuPeakT[ch] > 1.2) vuPeak[ch] *= 0.97;
+      drawVU(vuCanvases[ch], VU_COLS[ch], vuSmooth[ch], vuPeak[ch], VU_LABELS[ch]);
     });
-    drawScope(time);
-    drawEQ(freq);
+    drawScope(usedTime);
+    drawEQ(usedFreq);
   } else {
     // Idle drift
-    [0,1,2,3].forEach(ch=>{
-      const idle=Math.max(0,(Math.sin(t*0.4+ch*0.8)*0.04+0.045));
-      vuSmooth[ch]+=(idle-vuSmooth[ch])*0.1;
-      drawVU(vuCanvases[ch],VU_COLS[ch],vuSmooth[ch],0,VU_LABELS[ch]);
+    [0,1,2,3].forEach(ch => {
+      const idle = Math.max(0, Math.sin(t * 0.4 + ch * 0.8) * 0.04 + 0.045);
+      vuSmooth[ch] += (idle - vuSmooth[ch]) * 0.1;
+      drawVU(vuCanvases[ch], VU_COLS[ch], vuSmooth[ch], 0, VU_LABELS[ch]);
     });
-    const flat=new Uint8Array(2048).fill(128);
+    const flat = new Uint8Array(2048).fill(128);
     drawScope(flat);
-    const flatF=new Uint8Array(1024).fill(4);
-    drawEQ(flatF);
+    drawEQ(new Uint8Array(1024).fill(4));
   }
 }
 
 // ─── INIT ────────────────────────────────────────────────────
 function sizeCanvases() {
-  const panel = document.querySelector('.panel');
-  const scopeWrap = document.querySelector('.scope-wrap');
-  document.getElementById('scope').width = scopeWrap.clientWidth - 32;
-  document.getElementById('eq-canvas').width = document.getElementById('eq-canvas').parentElement.clientWidth - 148;
-  document.querySelectorAll('.vu-meter').forEach(c=>{
-    c.width = c.parentElement.clientWidth/4 - 5;
-    c.height = 95;
+  requestAnimationFrame(()=>{
+    // Scope
+    const scopeWrap = document.querySelector('.scope-wrap');
+    const scope = document.getElementById('scope');
+    const pad = parseFloat(getComputedStyle(scopeWrap).paddingLeft) * 2;
+    scope.width  = scopeWrap.clientWidth  - pad;
+    scope.height = scopeWrap.clientHeight;
+
+    // EQ
+    const eqCanvas = document.getElementById('eq-canvas');
+    eqCanvas.width  = eqCanvas.clientWidth;
+    eqCanvas.height = eqCanvas.clientHeight;
+
+    // VU meters
+    document.querySelectorAll('.vu-meter').forEach(c=>{
+      c.width  = c.clientWidth;
+      c.height = c.clientHeight;
+    });
   });
 }
 
 window.addEventListener('DOMContentLoaded', ()=>{
+  attachErrorListener();
   buildSwitches();
   sizeCanvases();
   animate();
@@ -809,6 +1040,5 @@ window.addEventListener('DOMContentLoaded', ()=>{
 
 window.addEventListener('resize', sizeCanvases);
 </script>
-
 </body>
 </html>
